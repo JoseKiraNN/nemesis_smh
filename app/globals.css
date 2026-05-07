@@ -1,0 +1,188 @@
+:root {
+  --bg: #0b0a0d;
+  --bg-2: #15131a;
+  --panel: #1c1922;
+  --panel-2: #252030;
+  --ink: #efe9dc;
+  --ink-dim: #b3a99a;
+  --accent: #d94f3a;
+  --accent-2: #f5a05b;
+  --good: #6ec07a;
+  --bad: #d94f3a;
+  --warn: #e6c34d;
+  --border: #36303f;
+}
+
+* { box-sizing: border-box; }
+
+html, body {
+  margin: 0;
+  padding: 0;
+  background: radial-gradient(1200px 600px at 50% -200px, #2a1f2e 0%, var(--bg) 60%);
+  color: var(--ink);
+  font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  min-height: 100vh;
+}
+
+a { color: var(--accent-2); text-decoration: none; }
+a:hover { text-decoration: underline; }
+
+.page-shell {
+  max-width: 980px;
+  margin: 0 auto;
+  padding: 48px 24px 96px;
+}
+
+h1, h2, h3 {
+  font-family: "Trajan Pro", "Cinzel", Georgia, serif;
+  letter-spacing: 0.04em;
+}
+
+h1 {
+  font-size: clamp(2rem, 4vw, 3rem);
+  line-height: 1.1;
+  margin: 0 0 12px;
+}
+
+h2 {
+  font-size: 1.6rem;
+  margin: 32px 0 12px;
+  color: var(--accent-2);
+}
+
+p { line-height: 1.6; color: var(--ink); }
+.dim { color: var(--ink-dim); }
+
+.hero {
+  border: 1px solid var(--border);
+  background: linear-gradient(180deg, var(--panel) 0%, var(--bg-2) 100%);
+  border-radius: 14px;
+  padding: 32px;
+  margin-bottom: 32px;
+}
+
+.tagline {
+  color: var(--ink-dim);
+  font-size: 1.05rem;
+  margin: 0 0 24px;
+}
+
+.cta {
+  display: inline-block;
+  background: var(--accent);
+  color: white;
+  padding: 12px 22px;
+  border-radius: 8px;
+  font-weight: 600;
+  border: 1px solid #b53a27;
+  cursor: pointer;
+  font-size: 1rem;
+}
+.cta:hover { background: #e96450; text-decoration: none; }
+.cta.secondary { background: transparent; color: var(--ink); border-color: var(--border); }
+.cta.secondary:hover { background: var(--panel-2); }
+.cta.danger { background: transparent; color: var(--bad); border-color: #5a2a2a; }
+
+.cta-row { display: flex; gap: 12px; flex-wrap: wrap; }
+
+.card {
+  border: 1px solid var(--border);
+  background: var(--panel);
+  border-radius: 12px;
+  padding: 20px;
+  margin-bottom: 16px;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 16px;
+}
+
+ul.clean { list-style: none; padding: 0; margin: 0; }
+ul.clean li { padding: 6px 0; border-bottom: 1px dashed var(--border); }
+ul.clean li:last-child { border-bottom: none; }
+
+.badge {
+  display: inline-block;
+  font-size: 0.75rem;
+  padding: 2px 8px;
+  border-radius: 999px;
+  background: var(--panel-2);
+  color: var(--ink-dim);
+  border: 1px solid var(--border);
+  margin-right: 6px;
+  margin-bottom: 4px;
+}
+.badge.scar { color: #f0a07a; border-color: #6b3a2a; }
+.badge.trait { color: #b9c8e0; border-color: #36506b; }
+.badge.grudge { color: #e6c34d; border-color: #6b5a2a; }
+
+/* combat */
+.combat-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+@media (max-width: 720px) {
+  .combat-grid { grid-template-columns: 1fr; }
+}
+
+.bar {
+  background: #2b2530;
+  border-radius: 6px;
+  height: 14px;
+  overflow: hidden;
+  border: 1px solid var(--border);
+}
+.bar > div {
+  height: 100%;
+  transition: width 0.3s ease;
+}
+.bar.player > div { background: linear-gradient(90deg, #6ec07a, #b8e0a0); }
+.bar.enemy > div { background: linear-gradient(90deg, #d94f3a, #f5a05b); }
+
+.actions {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+  margin-top: 16px;
+}
+.actions button {
+  background: var(--panel-2);
+  border: 1px solid var(--border);
+  color: var(--ink);
+  padding: 12px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 0.95rem;
+  text-align: left;
+}
+.actions button:hover:not(:disabled) { background: #312a3d; border-color: #4a4055; }
+.actions button:disabled { opacity: 0.5; cursor: not-allowed; }
+.actions .small { font-size: 0.75rem; color: var(--ink-dim); display: block; margin-top: 2px; }
+
+.log {
+  max-height: 280px;
+  overflow-y: auto;
+  background: #110f15;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 12px;
+  font-family: ui-monospace, "SF Mono", Menlo, monospace;
+  font-size: 0.85rem;
+  line-height: 1.5;
+}
+.log p { margin: 0 0 6px; color: var(--ink-dim); }
+.log p:last-child { color: var(--ink); }
+
+hr.thin { border: none; border-top: 1px solid var(--border); margin: 20px 0; }
+
+.foot {
+  margin-top: 48px;
+  padding-top: 16px;
+  border-top: 1px solid var(--border);
+  color: var(--ink-dim);
+  font-size: 0.85rem;
+  text-align: center;
+}
