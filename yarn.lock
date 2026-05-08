@@ -1,0 +1,3 @@
+# yarn lockfile v1
+# Empty lockfile — Vercel will populate this during install.
+# Its presence tells Vercel to use yarn instead of npm.
