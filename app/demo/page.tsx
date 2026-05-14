@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import {
   type ActionId,
   type BattleState,
@@ -103,6 +103,8 @@ export default function DemoPage() {
     <main>
       <p>
         <Link href="/">← Back</Link>
+        {" · "}
+        <Link href="/code">See the code →</Link>
       </p>
       <h1>The Arena</h1>
       <p className="tagline">
@@ -191,40 +193,116 @@ export default function DemoPage() {
   );
 }
 
-function NemesisCard({ nemesis }: { nemesis: Nemesis }) {
-  const grudgeLabels: Record<string, string> = useMemo(
-    () => ({
-      "you-burned-me": "Burned by you",
-      "you-fled": "You fled",
-      "you-killed-me": "You killed me",
-      "you-spared-me": "You spared me",
-      "you-mocked-me": "You lost to me",
-    }),
-    [],
-  );
+const TRAIT_INFO: Record<string, { icon: string; effect: string }> = {
+  "Armored":         { icon: "🛡️", effect: "+20 max HP, +3 defense. Reduces all damage you deal." },
+  "Brutal":          { icon: "🪓", effect: "+4 attack. Every hit they land hurts more." },
+  "Berserker":       { icon: "💢", effect: "Below 40% HP, gains +5 attack. More dangerous when wounded." },
+  "Vengeful":        { icon: "🔥", effect: "+2 attack while they hold any grudge against you." },
+  "Quick":           { icon: "💨", effect: "Drops your flee chance from 70% → 45%. Hard to escape." },
+  "Cowardly":        { icon: "😨", effect: "25% chance each turn to hesitate and skip its attack." },
+  "Fire Resistant":  { icon: "🧯", effect: "Your fire does only 4–6 dmg instead of 22–29." },
+};
 
+const SCAR_INFO: Record<string, { icon: string; effect: string }> = {
+  "Burned":         { icon: "🔥", effect: "−1 defense. Your strikes cut deeper." },
+  "One-Eyed":       { icon: "👁️", effect: "−2 attack. Their aim is off." },
+  "Limping":        { icon: "🦿", effect: "−1 defense." },
+  "Cracked Skull":  { icon: "💀", effect: "−5 max HP." },
+  "Missing Arm":    { icon: "🦾", effect: "−4 attack. They struggle to swing." },
+};
+
+const GRUDGE_INFO: Record<string, { label: string; icon: string; effect: string }> = {
+  "you-burned-me":  { label: "Burned by you",   icon: "🔥", effect: "Triggers an opening taunt. Activates Vengeful's +2 atk if they have it." },
+  "you-fled":       { label: "You fled them",   icon: "🏃", effect: "Triggers an opening taunt. Activates Vengeful's +2 atk if they have it." },
+  "you-killed-me":  { label: "You killed them", icon: "⚰️", effect: "They cheated death. Triggers a taunt and powers Vengeful." },
+  "you-spared-me":  { label: "You spared them", icon: "🤝", effect: "Mercy was a mistake. Triggers a taunt and powers Vengeful." },
+  "you-mocked-me":  { label: "You mocked them", icon: "😤", effect: "Triggers a taunt and powers Vengeful." },
+};
+
+function InfoBadge({
+  className,
+  icon,
+  label,
+  effect,
+}: {
+  className: string;
+  icon: string;
+  label: string;
+  effect: string;
+}) {
+  return (
+    <span className={`badge ${className} info-badge`} title={`${label} — ${effect}`}>
+      <span className="badge-icon" aria-hidden>{icon}</span>
+      {label}
+      <span className="tooltip" role="tooltip">{effect}</span>
+    </span>
+  );
+}
+
+function NemesisCard({ nemesis }: { nemesis: Nemesis }) {
   return (
     <div className="card">
       <div style={{ display: "flex", justifyContent: "space-between", flexWrap: "wrap", gap: 8 }}>
         <h2 style={{ margin: 0, color: "var(--ink)" }}>
           {nemesis.name} {nemesis.title}
         </h2>
-        <span className="badge">Rank {nemesis.rank}</span>
+        <span
+          className="badge info-badge"
+          title={`Rank ${nemesis.rank} — Each rank above 1 means +20 HP, +3 atk, +1 def vs spawn baseline (gained when they beat you).`}
+        >
+          <span className="badge-icon" aria-hidden>⭐</span>
+          Rank {nemesis.rank}
+          <span className="tooltip" role="tooltip">
+            Each rank above 1 means +20 HP, +3 atk, +1 def vs the spawn baseline. They rank up every time they beat you.
+          </span>
+        </span>
       </div>
       <p className="dim" style={{ marginTop: 4 }}>
         Encounters: {nemesis.encounters} · Their wins: {nemesis.wins} · Your wins: {nemesis.losses}
       </p>
-      <div>
-        {nemesis.traits.map(t => (
-          <span key={t} className="badge trait">{t}</span>
-        ))}
-        {nemesis.scars.map(s => (
-          <span key={s} className="badge scar">Scar: {s}</span>
-        ))}
-        {nemesis.grudges.slice(-4).map((g, i) => (
-          <span key={i} className="badge grudge">{grudgeLabels[g.kind] ?? g.kind}</span>
-        ))}
+      <div className="badge-row">
+        {nemesis.traits.map(t => {
+          const info = TRAIT_INFO[t];
+          return (
+            <InfoBadge
+              key={t}
+              className="trait"
+              icon={info?.icon ?? "✨"}
+              label={t}
+              effect={info?.effect ?? "An intrinsic trait."}
+            />
+          );
+        })}
+        {nemesis.scars.map(s => {
+          const info = SCAR_INFO[s];
+          return (
+            <InfoBadge
+              key={s}
+              className="scar"
+              icon={info?.icon ?? "🩸"}
+              label={`Scar: ${s}`}
+              effect={info?.effect ?? "A wound from a past battle."}
+            />
+          );
+        })}
+        {nemesis.grudges.slice(-4).map((g, i) => {
+          const info = GRUDGE_INFO[g.kind];
+          return (
+            <InfoBadge
+              key={`${g.kind}-${i}`}
+              className="grudge"
+              icon={info?.icon ?? "🗡️"}
+              label={info?.label ?? g.kind}
+              effect={info?.effect ?? "A memory they carry into battle."}
+            />
+          );
+        })}
       </div>
+      {nemesis.traits.length + nemesis.scars.length + nemesis.grudges.length > 0 && (
+        <p className="dim" style={{ marginTop: 8, fontSize: "0.78rem" }}>
+          Hover (or tap) any label to see what it does in combat.
+        </p>
+      )}
       {nemesis.log.length > 0 && (
         <details style={{ marginTop: 12 }}>
           <summary className="dim" style={{ cursor: "pointer" }}>

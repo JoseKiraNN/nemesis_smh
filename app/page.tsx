@@ -13,6 +13,12 @@ export default function HomePage() {
           <Link className="cta" href="/demo">
             Face your Nemesis →
           </Link>
+          <Link className="cta secondary" href="/code">
+            See the code →
+          </Link>
+          <Link className="cta secondary" href="/langgraph">
+            Build it as a LangGraph agent →
+          </Link>
           <a
             className="cta secondary"
             href="#how-it-works"
@@ -91,6 +97,231 @@ export default function HomePage() {
             </p>
           </div>
         </div>
+      </section>
+
+      <section id="system-diagram">
+        <h2>The system, in a real game loop</h2>
+        <p>
+          In a shipping title (think <em>Shadow of Mordor</em>), the Nemesis
+          System isn&rsquo;t one fight — it&rsquo;s an ecosystem. Captains live,
+          plot, get promoted, and pursue grudges <strong>even while you&rsquo;re
+          not looking</strong>. Here&rsquo;s the shape of it:
+        </p>
+
+        <div className="diagram-wrap">
+          <svg
+            viewBox="0 0 880 520"
+            xmlns="http://www.w3.org/2000/svg"
+            role="img"
+            aria-label="Diagram of the Nemesis System loop in a videogame: player encounters feed memory, which feeds the AI director, which evolves captains and the world hierarchy."
+            className="system-diagram"
+          >
+            <defs>
+              <marker
+                id="arrow"
+                viewBox="0 0 10 10"
+                refX="9"
+                refY="5"
+                markerWidth="7"
+                markerHeight="7"
+                orient="auto-start-reverse"
+              >
+                <path d="M0,0 L10,5 L0,10 z" fill="#b3a99a" />
+              </marker>
+              <marker
+                id="arrow-accent"
+                viewBox="0 0 10 10"
+                refX="9"
+                refY="5"
+                markerWidth="7"
+                markerHeight="7"
+                orient="auto-start-reverse"
+              >
+                <path d="M0,0 L10,5 L0,10 z" fill="#f5a05b" />
+              </marker>
+              <linearGradient id="gPanel" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stopColor="#252030" />
+                <stop offset="100%" stopColor="#1c1922" />
+              </linearGradient>
+            </defs>
+
+            {/* PLAYER */}
+            <g>
+              <rect x="20" y="220" width="150" height="80" rx="10"
+                    fill="url(#gPanel)" stroke="#36506b" />
+              <text x="95" y="252" textAnchor="middle" fill="#b9c8e0"
+                    fontFamily="Cinzel, Georgia, serif" fontSize="16">Player</text>
+              <text x="95" y="275" textAnchor="middle" fill="#b3a99a"
+                    fontSize="11">attacks · flees · spares</text>
+            </g>
+
+            {/* ENCOUNTER */}
+            <g>
+              <rect x="220" y="220" width="170" height="80" rx="10"
+                    fill="url(#gPanel)" stroke="#b53a27" />
+              <text x="305" y="252" textAnchor="middle" fill="#f5a05b"
+                    fontFamily="Cinzel, Georgia, serif" fontSize="16">Encounter</text>
+              <text x="305" y="273" textAnchor="middle" fill="#b3a99a"
+                    fontSize="11">combat · chase · ambush</text>
+            </g>
+
+            {/* MEMORY / EVENT BUS */}
+            <g>
+              <rect x="450" y="220" width="170" height="80" rx="10"
+                    fill="url(#gPanel)" stroke="#6b5a2a" />
+              <text x="535" y="248" textAnchor="middle" fill="#e6c34d"
+                    fontFamily="Cinzel, Georgia, serif" fontSize="16">Memory / Event Bus</text>
+              <text x="535" y="270" textAnchor="middle" fill="#b3a99a"
+                    fontSize="11">&quot;you burned me&quot;,</text>
+              <text x="535" y="284" textAnchor="middle" fill="#b3a99a"
+                    fontSize="11">&quot;you fled&quot;, &quot;you spared me&quot;</text>
+            </g>
+
+            {/* AI DIRECTOR */}
+            <g>
+              <rect x="680" y="220" width="180" height="80" rx="10"
+                    fill="url(#gPanel)" stroke="#36506b" />
+              <text x="770" y="252" textAnchor="middle" fill="#b9c8e0"
+                    fontFamily="Cinzel, Georgia, serif" fontSize="16">AI Director</text>
+              <text x="770" y="275" textAnchor="middle" fill="#b3a99a"
+                    fontSize="11">promotes · scars · adapts</text>
+            </g>
+
+            {/* HIERARCHY top */}
+            <g>
+              <rect x="280" y="40" width="320" height="120" rx="10"
+                    fill="url(#gPanel)" stroke="#36303f" />
+              <text x="440" y="65" textAnchor="middle" fill="#f5a05b"
+                    fontFamily="Cinzel, Georgia, serif" fontSize="14">Faction hierarchy</text>
+
+              {/* warchief */}
+              <circle cx="440" cy="100" r="18" fill="#2a1a18" stroke="#d94f3a" />
+              <text x="440" y="105" textAnchor="middle" fill="#f0a07a" fontSize="11">WC</text>
+              {/* captains */}
+              <circle cx="340" cy="135" r="13" fill="#182030" stroke="#36506b" />
+              <text x="340" y="139" textAnchor="middle" fill="#b9c8e0" fontSize="10">C1</text>
+              <circle cx="400" cy="140" r="13" fill="#182030" stroke="#36506b" />
+              <text x="400" y="144" textAnchor="middle" fill="#b9c8e0" fontSize="10">C2</text>
+              <circle cx="460" cy="140" r="13" fill="#182030" stroke="#36506b" />
+              <text x="460" y="144" textAnchor="middle" fill="#b9c8e0" fontSize="10">C3</text>
+              <circle cx="520" cy="135" r="13" fill="#182030" stroke="#36506b" />
+              <text x="520" y="139" textAnchor="middle" fill="#b9c8e0" fontSize="10">C4</text>
+
+              <line x1="440" y1="118" x2="340" y2="122" stroke="#36303f" />
+              <line x1="440" y1="118" x2="400" y2="127" stroke="#36303f" />
+              <line x1="440" y1="118" x2="460" y2="127" stroke="#36303f" />
+              <line x1="440" y1="118" x2="520" y2="122" stroke="#36303f" />
+            </g>
+
+            {/* WORLD STATE / SUCCESSION */}
+            <g>
+              <rect x="450" y="380" width="200" height="100" rx="10"
+                    fill="url(#gPanel)" stroke="#36303f" />
+              <text x="550" y="408" textAnchor="middle" fill="#f5a05b"
+                    fontFamily="Cinzel, Georgia, serif" fontSize="14">World state</text>
+              <text x="550" y="430" textAnchor="middle" fill="#b3a99a" fontSize="11">
+                successions · feuds
+              </text>
+              <text x="550" y="447" textAnchor="middle" fill="#b3a99a" fontSize="11">
+                offline simulation
+              </text>
+              <text x="550" y="464" textAnchor="middle" fill="#b3a99a" fontSize="11">
+                random events
+              </text>
+            </g>
+
+            {/* PERSISTENCE */}
+            <g>
+              <rect x="680" y="380" width="180" height="100" rx="10"
+                    fill="url(#gPanel)" stroke="#36303f" />
+              <text x="770" y="408" textAnchor="middle" fill="#f5a05b"
+                    fontFamily="Cinzel, Georgia, serif" fontSize="14">Save / DB</text>
+              <text x="770" y="432" textAnchor="middle" fill="#b3a99a" fontSize="11">
+                serialized captains
+              </text>
+              <text x="770" y="450" textAnchor="middle" fill="#b3a99a" fontSize="11">
+                grudges · scars · ranks
+              </text>
+              <text x="770" y="468" textAnchor="middle" fill="#b3a99a" fontSize="11">
+                survives reboot
+              </text>
+            </g>
+
+            {/* QUESTS / MISSIONS */}
+            <g>
+              <rect x="20" y="380" width="200" height="100" rx="10"
+                    fill="url(#gPanel)" stroke="#36303f" />
+              <text x="120" y="408" textAnchor="middle" fill="#f5a05b"
+                    fontFamily="Cinzel, Georgia, serif" fontSize="14">Procedural quests</text>
+              <text x="120" y="432" textAnchor="middle" fill="#b3a99a" fontSize="11">
+                &quot;Hunt the orc who
+              </text>
+              <text x="120" y="450" textAnchor="middle" fill="#b3a99a" fontSize="11">
+                burned your camp&quot;
+              </text>
+              <text x="120" y="468" textAnchor="middle" fill="#b3a99a" fontSize="11">
+                generated from grudges
+              </text>
+            </g>
+
+            {/* arrows: player <-> encounter */}
+            <line x1="170" y1="260" x2="218" y2="260"
+                  stroke="#b3a99a" strokeWidth="2" markerEnd="url(#arrow)" />
+            {/* encounter -> memory */}
+            <line x1="390" y1="260" x2="448" y2="260"
+                  stroke="#b3a99a" strokeWidth="2" markerEnd="url(#arrow)" />
+            {/* memory -> ai director */}
+            <line x1="620" y1="260" x2="678" y2="260"
+                  stroke="#b3a99a" strokeWidth="2" markerEnd="url(#arrow)" />
+            {/* ai director up to hierarchy */}
+            <path d="M 770 220 C 770 180, 700 160, 600 140"
+                  stroke="#f5a05b" strokeWidth="2" fill="none"
+                  markerEnd="url(#arrow-accent)" />
+            {/* ai director down to world state */}
+            <line x1="770" y1="300" x2="770" y2="378"
+                  stroke="#b3a99a" strokeWidth="2" markerEnd="url(#arrow)" />
+            {/* world state -> persistence */}
+            <line x1="650" y1="430" x2="678" y2="430"
+                  stroke="#b3a99a" strokeWidth="2" markerEnd="url(#arrow)" />
+            {/* persistence -> ai director (cycle) */}
+            <path d="M 770 380 C 870 360, 870 320, 820 300"
+                  stroke="#36303f" strokeWidth="1.5" fill="none"
+                  strokeDasharray="4 3" />
+            {/* hierarchy -> encounter (which captain shows up) */}
+            <path d="M 440 160 C 440 195, 380 210, 305 218"
+                  stroke="#f5a05b" strokeWidth="2" fill="none"
+                  markerEnd="url(#arrow-accent)" />
+            {/* memory -> quests */}
+            <path d="M 470 300 C 380 360, 250 365, 180 378"
+                  stroke="#e6c34d" strokeWidth="2" fill="none"
+                  markerEnd="url(#arrow)" />
+            {/* quests -> player */}
+            <path d="M 95 380 C 95 340, 95 320, 95 300"
+                  stroke="#b3a99a" strokeWidth="2" fill="none"
+                  markerEnd="url(#arrow)" />
+          </svg>
+
+          <ul className="diagram-legend clean">
+            <li>
+              <span className="dot dot-player" /> Player loop — what you do in a fight.
+            </li>
+            <li>
+              <span className="dot dot-memory" /> Memory bus — every action emits a tagged event (burned, fled, killed).
+            </li>
+            <li>
+              <span className="dot dot-director" /> AI Director — reads events, mutates captains, picks who shows up next.
+            </li>
+            <li>
+              <span className="dot dot-world" /> World state — runs even while you&rsquo;re away (offline simulation).
+            </li>
+          </ul>
+        </div>
+
+        <p className="dim" style={{ fontSize: "0.9rem" }}>
+          The little version on this site collapses the AI Director, hierarchy
+          and world state into one function (<code>resolveAftermath</code>) and
+          one captain. Same loop, fewer moving parts.
+        </p>
       </section>
 
       <section>
